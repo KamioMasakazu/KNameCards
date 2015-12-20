@@ -1,0 +1,190 @@
+body{
+	font-size: 12px;
+	margin:0;
+}
+
+/******************************************************************************
+ *	表
+ *****************************************************************************/
+div#NameCardListArea {
+	position: relative;
+}
+
+div#ConfigShowCols{
+	position: relative;
+}
+
+table#NameCardList{
+	border-collapse:collapse;
+	border: 1px solid black;
+	position: relative;
+}
+
+table#NameCardList td{
+	border: 1px solid black;
+	position: relative;
+}
+
+thead#NameCardHeader{
+	position: relative;
+}
+
+tbody#NameCardBody{
+	position: relative;
+}
+
+table#NameCardList th{
+	border: 1px solid black;	
+	position: relative;
+}
+
+thead#NameCardHeader tr {
+	background-color: #c0c0c0;
+	position: relative;
+}
+
+tbody#NameCardBody tr:nth-child(even){
+	background-color: #c6e2e2;
+	position: relative;
+}
+
+input.ListInput{
+	background-color: transparent;
+	border: none;
+	padding: 0;
+	height: 2em;
+}
+
+input.LName{
+	width: 4em;
+}
+
+input.FName{
+	width: 4em;
+}
+
+input.JobType{
+	width: 4em;
+}
+
+input.Companey {
+	width: 6em;
+}
+
+input.Position{
+	width: 4em;
+}
+
+input.PostalCode{
+	width: 5em;
+}
+
+input.Address1{
+	width: 12em;
+}
+
+input.Address2{
+	width: 12em;
+}
+
+input.Tel1{
+	width: 8em;
+}
+
+input.Tel2{
+	width: 8em;
+}
+
+input.Fax{
+	width: 8em;
+}
+
+input.EMail{
+	width: 15em;
+}
+
+input.HomePage{
+	width: 15em;
+}
+
+div.CheckBoxDiv {
+	margin: 1px 2px;
+	display: inline-block;
+}
+
+/******************************************************************************
+ *	設定パネル領域
+ *****************************************************************************/
+input#KeyWords{
+	width:20em;
+}
+
+div#ConfigArea {
+	position: fixed;
+	bottom:0;
+	background-color: #c0c0c0;
+	width:100%;
+}
+
+div.ConfigPanel {
+	position:relative;
+	display: table;
+	table-layout: fixed;
+	width:100%;
+}
+
+div.ConfigCloseArea{
+	position:relative;
+	display: table-cell;
+	padding: 0 3px;
+	vertical-align: middle;
+	text-align: center;
+	font-weight: bold;
+	border: solid gray 1px;
+	border-radius:3px;
+	width:15px;
+	cursor: pointer;
+}
+
+div.ConfigContents{
+	position:relative;
+	display: table-cell;
+	padding: 0 3px;
+	vertical-align: middle;
+	border: solid gray 1px;
+	border-radius:3px;
+}
+
+/******************************************************************************
+ *	地図
+ *****************************************************************************/
+div#MapWrapper {
+	position:fixed;
+	bottom:10px;
+	right:10px;
+}
+
+div#CloseMap {
+	position: relative;
+	text-align: center;
+	background-color: rgba(0,0,0,0.5);
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+div#MapArea {
+	height: 200px;
+	width: 300px;
+}
+
+button.MapButton {
+	float: right;
+	background-color:rgba(255,255,255,0.5);
+	border: solid gray 1px;
+	border-radius: 7px;
+	cursor: pointer;
+}
+button.MapButton:hover{
+	background-color:rgba(0,0,0,0.5);	
+}

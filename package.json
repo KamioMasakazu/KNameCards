@@ -1,0 +1,16 @@
+{
+  "name": "knamecards",
+  "version": "1.0.0",
+  "description": "to store name cards.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package" : "electron-packager . KNameCard --platform=darwin --arch=x64 --version=0.36.0 --overwrite --out='../' --asar=true"
+  },
+  "repository": {
+    "type": "git",
+    "url": " "
+  },
+  "author": "kamio",
+  "license": "ISC"
+}
