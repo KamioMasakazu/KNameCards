@@ -1,3 +1,5 @@
+'use strict'
+
 var KNameCard = KNameCard || {
 	DispMode: "View",		// View：表示、Input：入力
 	ResizeTimer: false,		// ウィンドウサイズ変更処理のためのタイマ
@@ -47,9 +49,7 @@ KNameCard.readConfigFile = function(){
  */
 KNameCard.writeConfigFile = function(){
 	var data = JSON.stringify(KNameCard.Config, null, '\t');
-	fs.writeFileSync(app.getPath('userData') + '/config.json', data, null, function (err) {
-	    console.log(err);
-	});
+	fs.writeFileSync(app.getPath('userData') + '/config.json', data, null);
 }
 
 /**
@@ -100,7 +100,7 @@ KNameCard.checkNameCard = function(data){
  */
 KNameCard.readNameCards = function(file){
 	if (!KNameCard.Config.DataPath) {
-		KNameCard.Config.DataPath = "NameCards.json";
+		KNameCard.Config.DataPath = app.getPath('userData') + "NameCards.json";
 	}
 	if (!file) {
 			file = KNameCard.Config.DataPath;
@@ -130,7 +130,7 @@ KNameCard.writeNameCards = function(file){
 
 	var data = JSON.stringify(KNameCard.Cards, null, '\t');
 	fs.writeFileSync(file, data, null, function (err) {
-	    console.log(err);
+		console.log(err);
 	});
 }
 
@@ -162,7 +162,7 @@ KNameCard.addDelButtonToRow = function(tr){
 KNameCard.createListTitle = function(mode){
 	var title = document.getElementById('NameCardHeader');
 
-	for(var i=title.childNodes.length-1; i>=0; i--){
+	for(let i=title.childNodes.length-1; i>=0; i--){
 		title.removeChild(title.childNodes[i]);
 	}
 	var tr = document.createElement("tr");
@@ -173,7 +173,7 @@ KNameCard.createListTitle = function(mode){
 		tr.appendChild(del_td);
 	}
 
-	for(var i=0; i<KNameCard.EntryList.length; i++){
+	for(let i=0; i<KNameCard.EntryList.length; i++){
 		var col = KNameCard.EntryList[i].Name;	// 設定項目
 
 		// 表示モードの時は表示対象項目だけを表示する
@@ -285,11 +285,11 @@ KNameCard.createList = function(mode, data){
 
 	var list = document.getElementById('NameCardBody');
 
-	for(var i=list.childNodes.length-1; i>=0; i--){
+	for(let i=list.childNodes.length-1; i>=0; i--){
 		list.removeChild(list.childNodes[i]);
 	}
 
-	for(var i=0; i<data.length; i++){
+	for(let i=0; i<data.length; i++){
 		var tr;
 		if (mode == 'Input') {
 			tr = KNameCard.createCardEntryInput(i, data[i]);
@@ -380,7 +380,7 @@ KNameCard.addNewEntry = function(){
 			"Tel2":"",
 			"Fax":"",
 			"EMail":"",
-			"HomePage":""
+			"HomePage":"",
 	}
 
 	KNameCard.Cards.CardList.push(obj);
@@ -551,7 +551,6 @@ KNameCard.searchCardList = function(){
  *	表示項目設定を表示する
  */
 KNameCard.showDisplayColConfig = function(){
-	var ConfigShowCols = document.getElementById("ConfigShowCols");
 	var ShowColsCheckBoxs = document.getElementById("ShowColsCheckBoxs");
 	ShowColsCheckBoxs.innerHTML = "";
 
@@ -669,7 +668,7 @@ KNameCard.saveAs = function(){
 		{
 			title:"名刺データを保存",
 			defaultPath:KNameCard.Config.DataPath,
-			filters: [{ name: 'NameCard', extensions: ['json'] }]
+			filters: [{ name: 'NameCard', extensions: ['json'] }],
 		},
 		function(filename){
 			try{
@@ -703,7 +702,7 @@ KNameCard.open = function(){
 		{
 			title:"名刺データ読み込み",
 			defaultPath:KNameCard.Config.DataPath,
-			filters: [{ name: 'NameCard', extensions: ['json'] }]
+			filters: [{ name: 'NameCard', extensions: ['json'] }],
 		},
 		function(files) {
 			try{
@@ -796,6 +795,9 @@ KNameCard.drawMap = function(addr){
 	var lat = 0;
 	var lng = 0;
 	geocoder.geocode({'address': addr, 'language': 'ja'}, function(results, status) {
+		if(status != google.maps.GeocoderStatus.OK){
+			return;
+		}
 		lat = results[0].geometry.location.lat();
 		lng = results[0].geometry.location.lng();
 
@@ -804,8 +806,8 @@ KNameCard.drawMap = function(addr){
 
 		// 地図のオプションを設定する
 		var mapOptions = {
-		   zoom: 16 ,				// ズーム値
-		   center: Center ,		// 中心座標 [latlng]
+			zoom: 16 ,				// ズーム値
+			center: Center ,		// 中心座標 [latlng]
 		};
 
 		// [canvas]に、[mapOptions]の内容の、地図のインスタンス([map])を作成する
@@ -814,10 +816,10 @@ KNameCard.drawMap = function(addr){
 		// マーカーを表示する
 		var mopts = {
 			position: Center,
-			map: map
+			map: map,
 		};
 
-		var marker = new google.maps.Marker(mopts);
+		new google.maps.Marker(mopts);
 	});
 }
 
