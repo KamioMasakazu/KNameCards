@@ -1,97 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>名刺管理</title>
-  <link rel="stylesheet" href="css/default.css" />
-  <script src="https://maps.googleapis.com/maps/api/js"></script>
-  <script type="text/javascript" src="BaseScript.js"></script>
-  <script type="text/javascript">
-	KNameCard.readConfigFile();
-	KNameCard.readNameCards();
-	
-	function initCardList(){
-	  KNameCard.showNameCardList();
-	  KNameCard.showDisplayColConfig();
-	}
-	
-	function endCardList(){
-	  KNameCard.writeNameCards();
-	}
-	
-	// メニューイベント登録
-	if( require ) {
-	  var electron = require('electron');
-	  var ipc = electron.ipcRenderer;
-	  
-	  ipc.on('open',function (event,arg ) {
-		KNameCard.open();
-	  });
-	  
-	  ipc.on('save',function (event,arg ) {
-		KNameCard.save();
-	  });
-	  
-	  ipc.on('saveAs',function (event,arg ) {
-		KNameCard.saveAs();
-	  });
-	  
-	  ipc.on('copy',function (event,arg ) {
-		KNameCard.copy();
-	  });
-	  
-	  ipc.on('paste',function (event,arg ) {
-		KNameCard.paste();
-	  });
-	  
-	  ipc.on('toggleDisplayColConfig',function (event,arg ) {
-		KNameCard.toggleDisplayColConfig();
-	  });
-	  
-	  ipc.on('toggleSearchArea',function (event,arg ) {
-		KNameCard.toggleSearchArea();
-	  });
-	  
-	  ipc.on('switchDisplayMode',function (event,arg ) {
-		if (KNameCard.DispMode == 'Input') {
-		  KNameCard.DispMode = 'View';
-		}
-		else{
-		  KNameCard.DispMode = 'Input';
-		}
-		KNameCard.showNameCardList();
-	  });
-	  
-	  window.addEventListener("resize", KNameCard.saveWindowSize);
-	}
+	<meta charset="UTF-8">
+	<title>名刺管理</title>
+	<link rel="stylesheet" href="css/default.css" />
+	<script src="https://maps.googleapis.com/maps/api/js"></script>
+	<script type="text/javascript" src="BaseScript.js"></script>
+	<script type="text/javascript">
+	   'use strict'
+		KNameCard.readConfigFile();
+		KNameCard.readNameCards();
 
-  </script>
+		/**
+		 *	onload時処理
+		 */
+		function initCardList(){
+			KNameCard.showNameCardList();
+			KNameCard.showDisplayColConfig();
+		}
+
+		/**
+		 *	onunload時処理
+		 */
+		function endCardList(){
+			KNameCard.writeNameCards();
+		}
+
+		// メニューイベント登録
+		if( require ) {
+			let electron = require('electron');
+			let ipc = electron.ipcRenderer;
+
+			ipc.on('open',function (event,arg ) {
+				KNameCard.open();
+			});
+
+			ipc.on('save',function (event,arg ) {
+				KNameCard.save();
+			});
+
+			ipc.on('saveAs',function (event,arg ) {
+				KNameCard.saveAs();
+			});
+
+			ipc.on('copy',function (event,arg ) {
+				KNameCard.copy();
+			});
+
+			ipc.on('paste',function (event,arg ) {
+				KNameCard.paste();
+			});
+
+			ipc.on('toggleDisplayColConfig',function (event,arg ) {
+				KNameCard.toggleDisplayColConfig();
+			});
+
+			ipc.on('toggleSearchArea',function (event,arg ) {
+				KNameCard.toggleSearchArea();
+			});
+
+			ipc.on('switchDisplayMode',function (event,arg ) {
+				if (KNameCard.DispMode == 'Input') {
+					KNameCard.DispMode = 'View';
+				}
+				else{
+					KNameCard.DispMode = 'Input';
+				}
+				KNameCard.showNameCardList();
+			});
+
+			window.addEventListener("resize", KNameCard.saveWindowSize);
+		}
+
+		</script>
 </head>
 <body onload="initCardList();" onUnload="endCardList();">
-  <div id="NameCardListArea">
-	<table id="NameCardList">
-	  <thead id="NameCardHeader"></thead>
-	  <tbody id="NameCardBody"></tbody>
-	</table>
-  </div>
-  <div id="ConfigArea">
-	<div id="ConfigShowCols" style="display:none;" class="ConfigPanel">
-	  <div id="CloseDisplayColConfig" class="ConfigCloseArea" onclick="KNameCard.toggleDisplayColConfig();">×</div>
-	  <div class="ConfigContents">
-		<span id="ShowColsCheckBoxs"></span>
-		<button onclick="KNameCard.onDisplayColConfigClicked();">設定</button>
-	  </div>
+	<div id="NameCardListArea">
+		<table id="NameCardList">
+			<thead id="NameCardHeader"></thead>
+			<tbody id="NameCardBody"></tbody>
+		</table>
 	</div>
-	<div id="SearchArea" style="display:none;" class="ConfigPanel">
-	  <div id="CloseDisplayColConfig" class="ConfigCloseArea" onclick="KNameCard.toggleSearchArea();">×</div>
-  	  <div class="ConfigContents">
-		<input id="KeyWords" type="text"><button onclick="KNameCard.searchCardList()">検索</button>
-	  </div>
+	<div id="ConfigArea">
+		<div id="ConfigShowCols" style="display:none;" class="ConfigPanel">
+			<div id="CloseDisplayColConfig" class="ConfigCloseArea" onclick="KNameCard.toggleDisplayColConfig();">×</div>
+			<div class="ConfigContents">
+				<span id="ShowColsCheckBoxs"></span>
+				<button onclick="KNameCard.onDisplayColConfigClicked();">設定</button>
+			</div>
+		</div>
+		<div id="SearchArea" style="display:none;" class="ConfigPanel">
+			<div id="CloseDisplayColConfig" class="ConfigCloseArea" onclick="KNameCard.toggleSearchArea();">×</div>
+			<div class="ConfigContents">
+				<input id="KeyWords" type="text"><button onclick="KNameCard.searchCardList()">検索</button>
+			</div>
+		</div>
 	</div>
-  </div>
-  <div id="MapWrapper" style="display: none;">
-	<div id="CloseMap" onclick="KNameCard.closeMap();">×</div>
-	<div id="MapArea""></div>
-  </div>
+	<div id="MapWrapper" style="display: none;">
+		<div id="CloseMap" onclick="KNameCard.closeMap();">×</div>
+		<div id="MapArea"></div>
+	</div>
 </body>
 </html>

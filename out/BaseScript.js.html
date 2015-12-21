@@ -1,4 +1,32 @@
-'use strict'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: BaseScript.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: BaseScript.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict'
 
 /**
  *	名刺管理ソフト本体のスクリプト。
@@ -191,7 +219,7 @@ KNameCard.writeNameCards = function(file){
 /**
  *	入力モードの場合に削除ボタンを追加する処理
  *	@private
- *	@param {element:tr}	tr ボタンを追加する&lt;tr&gt;タグのエレメント
+ *	@param {element:tr}	tr ボタンを追加する&amp;lt;tr&amp;gt;タグのエレメント
  */
 KNameCard.addDelButtonToRow = function(tr){
 	// 削除ボタン
@@ -226,11 +254,11 @@ KNameCard.createListTitle = function(mode){
 		tr.appendChild(del_td);
 	}
 
-	for(let i=0; i<KNameCard.EntryList.length; i++){
+	for(let i=0; i&lt;KNameCard.EntryList.length; i++){
 		let col = KNameCard.EntryList[i].Name;	// 設定項目
 
 		// 表示モードの時は表示対象項目だけを表示する
-		if ((mode == 'View') && (KNameCard.Config.DispCols.indexOf(col) < 0)) {
+		if ((mode == 'View') &amp;&amp; (KNameCard.Config.DispCols.indexOf(col) &lt; 0)) {
 			continue;
 		}
 
@@ -252,22 +280,22 @@ KNameCard.createListTitle = function(mode){
 }
 
 /**
- *	表示モードで&lt;tr&gt;要素を作成して返す。
+ *	表示モードで&amp;lt;tr&amp;gt;要素を作成して返す。
  *	@private
  *	@param {int}	id 名刺リストの何番目の要素か
  *	@param {string}	value 名刺項目の入力値
- *	@return {element:tr}	作成した&lt;tr&gt;要素
+ *	@return {element:tr}	作成した&amp;lt;tr&amp;gt;要素
  */
 KNameCard.createCardEntryView = function(id, value){
 	let tr = document.createElement("tr");
 	tr.setAttribute("id", "CardNo"+id);
 
 	// 項目
-	for(let i=0; i<KNameCard.EntryList.length; i++){
+	for(let i=0; i&lt;KNameCard.EntryList.length; i++){
 		let col = KNameCard.EntryList[i].Name;	// 設定項目
 
 		// 表示対象項目だけを表示する
-		if (KNameCard.Config.DispCols.indexOf(col) < 0) {
+		if (KNameCard.Config.DispCols.indexOf(col) &lt; 0) {
 			continue;
 		}
 
@@ -279,7 +307,7 @@ KNameCard.createCardEntryView = function(id, value){
 		td.appendChild(txt);
 
 		// 地図用ボタン
-		if ((col == "Address1") && (val)) {
+		if ((col == "Address1") &amp;&amp; (val)) {
 			let btn = document.createElement("button");
 			btn.innerHTML = "地図";
 			btn.value = val;
@@ -295,10 +323,10 @@ KNameCard.createCardEntryView = function(id, value){
 }
 
 /**
- *	入力用に&lt;tr&gt;要素を作成して返す。
+ *	入力用に&amp;lt;tr&amp;gt;要素を作成して返す。
  *	@param {int}	id 名刺リストの何番目の要素か
  *	@param {string}	value 名刺項目の入力値
- *	@return {element:tr}	作成した&lt;tr&gt;要素
+ *	@return {element:tr}	作成した&amp;lt;tr&amp;gt;要素
  */
 KNameCard.createCardEntryInput = function(id, value){
 	let tr = document.createElement("tr");
@@ -308,7 +336,7 @@ KNameCard.createCardEntryInput = function(id, value){
 	KNameCard.addDelButtonToRow(tr);
 
 	// 項目
-	for(let i=0; i<KNameCard.EntryList.length; i++){
+	for(let i=0; i&lt;KNameCard.EntryList.length; i++){
 		let col = KNameCard.EntryList[i].Name;	// 設定項目
 
 		let td = document.createElement("td");
@@ -346,7 +374,7 @@ KNameCard.createList = function(mode, data){
 		list.removeChild(list.childNodes[i]);
 	}
 
-	for(let i=0; i<data.length; i++){
+	for(let i=0; i&lt;data.length; i++){
 		let tr;
 		if (mode == 'Input') {
 			tr = KNameCard.createCardEntryInput(i, data[i]);
@@ -375,7 +403,7 @@ KNameCard.appendInputField = function(){
 	// 削除ボタン追加
 	KNameCard.addDelButtonToRow(tr);
 
-	for(let i=0; i<KNameCard.EntryList.length; i++){
+	for(let i=0; i&lt;KNameCard.EntryList.length; i++){
 		let col = KNameCard.EntryList[i].Name;	// 設定項目
 
 		let td = document.createElement("td");
@@ -406,7 +434,7 @@ KNameCard.changeInput = function(event){
 		return;
 	}
 
-	// <tr>のIDから要素番号を作る
+	// &lt;tr>のIDから要素番号を作る
 	let pos_flg = elm.parentNode.parentNode.id;
 	let id = parseInt(pos_flg.replace("CardNo", ""));
 
@@ -428,7 +456,7 @@ KNameCard.changeInput = function(event){
  */
 KNameCard.addNewEntry = function(){
 	let obj = {};
-	for(let i=0; i<KNameCard.EntryList; i++){
+	for(let i=0; i&lt;KNameCard.EntryList; i++){
 		obj[KNameCard.EntryList.Name] = "";
 	}
 
@@ -442,7 +470,7 @@ KNameCard.addNewEntry = function(){
  *	@param {int} i	削除する要素番号
  */
 KNameCard.delEntry = function(i){
-	if ((i<0) || (KNameCard.Cards.CardList.length <= i)) {
+	if ((i&lt;0) || (KNameCard.Cards.CardList.length &lt;= i)) {
 		return;
 	}
 	KNameCard.Cards.CardList.splice(i,1);
@@ -514,7 +542,7 @@ KNameCard.clickToSort = function(event){
 	let list = KNameCard.Cards.CardList.concat();
 	list.sort(function(a, b){
 		if(a[col] > b[col]){ return order;}
-		else if(a[col] < b[col]){ return (-1 * order)}
+		else if(a[col] &lt; b[col]){ return (-1 * order)}
 		else{return 0;}
 	});
 
@@ -565,8 +593,8 @@ KNameCard.checkFilter = function(name_card, str){
 /**
  *	検索結果の配列を返す
  *	@private
- *	@param {Array<string>}	filter 検索条件の配列
- *	@return {Array<object>}	検索にヒットした名刺情報の配列
+ *	@param {Array&lt;string>}	filter 検索条件の配列
+ *	@return {Array&lt;object>}	検索にヒットした名刺情報の配列
  */
 KNameCard.getTargetNameList = function(filter){
 	if (!filter || !filter[0]) {
@@ -575,7 +603,7 @@ KNameCard.getTargetNameList = function(filter){
 
 	let list = KNameCard.Cards.CardList.concat();
 
-	for(let i=0; i<filter.length; i++){
+	for(let i=0; i&lt;filter.length; i++){
 		for(let j=list.length-1; j>=0; j--){
 			if (KNameCard.checkFilter(list[j], filter[i]) == false) {
 				list.splice(j,1);
@@ -610,7 +638,7 @@ KNameCard.showDisplayColConfig = function(){
 	let ShowColsCheckBoxs = document.getElementById("ShowColsCheckBoxs");
 	ShowColsCheckBoxs.innerHTML = "";
 
-	for(let i=0; i<KNameCard.EntryList.length; i++){
+	for(let i=0; i&lt;KNameCard.EntryList.length; i++){
 		let div = document.createElement("div");
 		div.setAttribute("class", "CheckBoxDiv");
 
@@ -671,7 +699,7 @@ KNameCard.toggleDisplayColConfig = function(){
 KNameCard.getDisplayColConfigChecked = function(){
 	let boxs = document.getElementsByName("DispColConfig");
 	let arr = Array();
-	for(let i=0; i<boxs.length; i++){
+	for(let i=0; i&lt;boxs.length; i++){
 		if (boxs[i].checked) {
 			arr.push(boxs[i].value);
 		}
@@ -919,3 +947,26 @@ KNameCard.closeMap = function(){
 	let map_wrapper = document.getElementById("MapWrapper");
 	map_wrapper.style.display = "none";
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="KNameCard.html">KNameCard</a></li></ul><h3>Global</h3><ul><li><a href="global.html#app">app</a></li><li><a href="global.html#browserWindow">browserWindow</a></li><li><a href="global.html#Cards">Cards</a></li><li><a href="global.html#clipboard">clipboard</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#dialog">dialog</a></li><li><a href="global.html#DispMode">DispMode</a></li><li><a href="global.html#electron">electron</a></li><li><a href="global.html#EntryList">EntryList</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getMenuList">getMenuList</a></li><li><a href="global.html#installMenu">installMenu</a></li><li><a href="global.html#ResizeTimer">ResizeTimer</a></li><li><a href="global.html#SortOrder">SortOrder</a></li><li><a href="global.html#switchCharactersByOS">switchCharactersByOS</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Dec 21 2015 17:10:28 GMT+0900 (JST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
