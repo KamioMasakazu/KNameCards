@@ -95,6 +95,11 @@ function getMenuList() {
 					click: function () { mainWindow.webContents.send('open') },
 				},
 				{
+					label: switchCharactersByOS('Append', '&Append'),
+					accelerator: switchCharactersByOS('Command+A', 'Ctrl+A'),
+					click: function () { mainWindow.webContents.send('append') },
+				},
+				{
 					label: switchCharactersByOS('Save', '&Save'),
 					accelerator: switchCharactersByOS('Command+S', 'Ctrl+S'),
 					click: function () { mainWindow.webContents.send('save') },

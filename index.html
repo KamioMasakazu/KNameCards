@@ -35,6 +35,10 @@
 				KNameCard.open();
 			});
 
+			ipc.on('append',function (event,arg ) {
+				KNameCard.openAdd();
+			});
+
 			ipc.on('save',function (event,arg ) {
 				KNameCard.save();
 			});

@@ -31,6 +31,12 @@ var KNameCard = KNameCard || {
 	Cards: null,
 
 	/**
+	 *	重複チェック用オブジェクト
+	 *	@private
+	 */
+	ExistVals: {},
+
+	/**
 	 *	名刺項目と表示の割り当て定義
 	 *	@private
 	 *	@const
@@ -75,6 +81,33 @@ var dialog = electron.remote.require('dialog');
 
 /** @const */
 var clipboard = require('electron').remote.clipboard;
+
+/******************************************************************************
+ *	ユーティリティ
+ *****************************************************************************/
+
+/**
+ *	名刺情報の文字列を連結する。この時、空文字列は無視する。
+ *	@param {object} name_card	名刺情報
+ *	@return {string} name_cardの値を全て連結した文字列
+ */
+KNameCard.joinCardValue = function(name_card){
+	if(!name_card){
+		return "";
+	}
+
+	let target = "";
+	for(let key in name_card){
+		let val = name_card[key];
+		val = val.trim();
+		if (!val) {
+			continue;
+		}
+		target += val;
+	}
+
+	return target;
+}
 
 /******************************************************************************
  *	内部処理
@@ -144,10 +177,39 @@ KNameCard.checkNameCard = function(data){
 }
 
 /**
+ *	重複重複チェック用連想配列にチェック文字列を追加する。
+ *	@param {name_card}	名刺情報オブジェクト
+ *	@private
+ */
+KNameCard.addExistVal = function(name_card){
+	let key = KNameCard.joinCardValue(name_card);
+	if(!key){
+		return;
+	}
+
+	KNameCard.ExistVals[key] = null;
+	return ;
+}
+
+/**
+ *	重複チェック用連想配列を新規に作成する。
+ *	@param {Array}	名刺情報の配列
+ *	@private
+ */
+KNameCard.createExistVal = function(card_list){
+	KNameCard.ExistVals = {};
+	for(let i=0; i<card_list.length; i++){
+		KNameCard.addExistVal(card_list[i]);
+	}
+}
+
+/**
  *	既存の名刺一覧を読み込む
  *	@param {string} file ファイルパス
+ *	@param {boolean}	not_set	KNameCard.Cardsに設定しない場合はtrue。
+ *	@return {object}	読み込んだ名刺情報（JSON）をオブジェクトにしたもの
  */
-KNameCard.readNameCards = function(file){
+KNameCard.readNameCards = function(file, not_set){
 	if (!KNameCard.Config.DataPath) {
 		KNameCard.Config.DataPath = app.getPath('userData') + "NameCards.json";
 	}
@@ -155,7 +217,7 @@ KNameCard.readNameCards = function(file){
 			file = KNameCard.Config.DataPath;
 	}
 
-	var data;
+	let data;
 	try{
 		let list = fs.readFileSync(file, 'utf-8');
 		data = JSON.parse(list);
@@ -164,9 +226,13 @@ KNameCard.readNameCards = function(file){
 		data = null;
 	}
 
-	KNameCard.Cards = KNameCard.checkNameCard(data);
+	let ret = KNameCard.checkNameCard(data);
+	if(!not_set){
+		KNameCard.createExistVal(ret.CardList);
+		KNameCard.Cards = ret;
+	}
 
-	return;
+	return ret;
 }
 
 /**
@@ -445,6 +511,8 @@ KNameCard.delEntry = function(i){
 	if ((i<0) || (KNameCard.Cards.CardList.length <= i)) {
 		return;
 	}
+	let key = KNameCard.joinCardValue(KNameCard.Cards.CardList[i]);
+	delete KNameCard.ExistVals[key];
 	KNameCard.Cards.CardList.splice(i,1);
 	return ;
 }
@@ -529,6 +597,7 @@ KNameCard.clickToSort = function(event){
 /******************************************************************************
  *	設定パネル関連
  *****************************************************************************/
+
 /**
  *	名刺に含まれる文字列を全て連結してその中から条件がヒットした場合trueを返す。
  *	ヒットしなかった時はfalseを返す。
@@ -544,15 +613,7 @@ KNameCard.checkFilter = function(name_card, str){
 		return true;
 	}
 
-	let target = "";
-	for(let key in name_card){
-		let val = name_card[key];
-		val = val.trim();
-		if (!val) {
-			continue;
-		}
-		target += val;
-	}
+	let target = KNameCard.joinCardValue(name_card);
 
 	if (target.indexOf(str) >= 0) {
 		return true;
@@ -773,18 +834,55 @@ KNameCard.open = function(){
 					filename = files[0];
 				}
 
-				let list = fs.readFileSync(filename, 'utf-8');
-				let data = JSON.parse(list);
+				KNameCard.readNameCards(filename);
+				KNameCard.showNameCardList();
+				KNameCard.Config.DataPath = filename;
+				KNameCard.writeConfigFile();
+			}
+			catch(e){
+				alert("ファイル読み込みに失敗しました。");
+			}
+		}
+	);
+	return ;
+}
 
-				if(KNameCard.checkNameCardFormat(data)){
-					KNameCard.Cards = data;
-					KNameCard.showNameCardList();
-					KNameCard.Config.DataPath = filename;
-					KNameCard.writeConfigFile();
+/**
+ *	名刺データを読み込んで既存データに追加する。
+ */
+KNameCard.openAdd = function(){
+	dialog.showOpenDialog(
+		browserWindow.getFocusedWindow(),
+		{
+			title:"名刺データ追加読み込み",
+			defaultPath:KNameCard.Config.DataPath,
+			filters: [{ name: 'NameCard', extensions: ['json'] }],
+		},
+		function(files) {
+			try{
+				let filename = null;
+				if (!files) {
+					return;		// ファイル名が取得できないのはキャンンセル時
 				}
 				else{
-					alert("名刺データではありません。");
+					filename = files[0];
 				}
+
+				let append_list = KNameCard.readNameCards(filename, true);
+
+				// 全く同じデータは追加しない
+				for(let i=0; i<append_list.CardList.length; i++){
+					let key = KNameCard.joinCardValue(append_list.CardList[i]);
+					if(key in KNameCard.ExistVals){
+						continue;
+					}
+					else{
+						KNameCard.addExistVal(key);
+						KNameCard.Cards.CardList.push(append_list.CardList[i]);
+					}
+				}
+
+				KNameCard.showNameCardList();
 			}
 			catch(e){
 				alert("ファイル読み込みに失敗しました。");
