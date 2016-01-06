@@ -342,7 +342,16 @@ KNameCard.createCardEntryView = function(id, value){
 
 		let val = value[col];
 		let txt = document.createTextNode(val);
-		td.appendChild(txt);
+
+		if((col == "EMail") && (val)){
+			let mailto = document.createElement("a");
+			mailto.setAttribute("href", "mailto:" + val);
+			mailto.appendChild(txt);
+			td.appendChild(mailto);
+		}
+		else{
+			td.appendChild(txt);
+		}
 
 		// 地図用ボタン
 		if ((col == "Address1") && (val)) {
@@ -494,8 +503,8 @@ KNameCard.changeInput = function(event){
  */
 KNameCard.addNewEntry = function(){
 	let obj = {};
-	for(let i=0; i<KNameCard.EntryList; i++){
-		obj[KNameCard.EntryList.Name] = "";
+	for(let i=0; i<KNameCard.EntryList.length; i++){
+		obj[KNameCard.EntryList[i].Name] = "";
 	}
 
 	KNameCard.Cards.CardList.push(obj);
