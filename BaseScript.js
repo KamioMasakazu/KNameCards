@@ -476,11 +476,6 @@ KNameCard.changeInput = function(event){
 	let elm = event.target;
 	let val = elm.value.trim();	// 入力された値
 
-	// 入力値がなければ無視
-	if (!val) {
-		return;
-	}
-
 	// <tr>のIDから要素番号を作る
 	let pos_flg = elm.parentNode.parentNode.id;
 	let id = parseInt(pos_flg.replace("CardNo", ""));
