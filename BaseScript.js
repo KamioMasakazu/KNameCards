@@ -68,19 +68,19 @@ var KNameCard = KNameCard || {
 var electron = require('electron');
 
 /** @const */
-var app = electron.remote.require('app');
+const app = electron.remote.app;
 
 /** @const */
 var fs = electron.remote.require('fs');
 
 /** @const */
-var browserWindow = electron.remote.require('browser-window');
+const browserWindow = electron.remote.BrowserWindow;
 
 /** @const */
-var dialog = electron.remote.require('dialog');
+var dialog = electron.remote.dialog;
 
 /** @const */
-var clipboard = require('electron').remote.clipboard;
+var clipboard = electron.remote.clipboard;
 
 /******************************************************************************
  *	ユーティリティ

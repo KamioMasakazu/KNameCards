@@ -5,10 +5,10 @@ var electron = require('electron');
 var app = electron.app;
 
 // ウィンドウを作成するモジュール
-var BrowserWindow = require('browser-window');
+var BrowserWindow = electron.BrowserWindow;
 
 // クラッシュレポート
-require('crash-reporter').start();
+// require('crash-reporter').start();
 
 // メインウィンドウはGCされないようにグローバル宣言
 var mainWindow = null;

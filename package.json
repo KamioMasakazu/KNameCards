@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "package" : "electron-packager . KNameCard --platform=darwin --arch=x64 --version=0.36.0 --ignore='(out)' --overwrite --out='../' --asar=true",
+    "package" : "electron-packager . KNameCard --platform=darwin --arch=x64 --version=1.0.2 --ignore='(out)' --overwrite --out='../' --asar=true",
     "doc" : "jsdoc ."
   },
   "repository": {
